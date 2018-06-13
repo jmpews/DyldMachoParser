@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 2.8)
-project(dyldLib)
+project(DYLDMachoParserProject)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -33,9 +33,13 @@ set(MachoParser.HEADER_FILE
 
 set(MachoParser.HEADER_DIR NotFoundFiles)
 
-
 # ADD_DEFINITIONS(-DDYLD_IN_PROCESS=1)
 # ADD_DEFINITIONS(-DTARGET_OS_IOS=1)
-add_library(DYLDMachoParser STATIC ${MachoParser.SOURCE_FILE} ${MachoParser.HEADER_FILE})
-target_include_directories(DYLDMachoParser PRIVATE ${MachoParser.SOURCE_DIR} ${MachoParser.HEADER_DIR})
-target_include_directories(DYLDMachoParser PUBLIC .)
+include_directories(${MachoParser.SOURCE_DIR} ${MachoParser.HEADER_DIR})
+
+if(BUILD_SHARED)
+    add_library(DYLDMachoParser SHARED ${MachoParser.SOURCE_FILE} ${MachoParser.HEADER_FILE})
+else()
+    add_library(DYLDMachoParser STATIC ${MachoParser.SOURCE_FILE} ${MachoParser.HEADER_FILE})
+endif()
+target_include_directories(DYLDMachoParser PUBLIC ./)

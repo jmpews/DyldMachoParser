@@ -21,42 +21,36 @@
  * @APPLE_LICENSE_HEADER_END@
  */
 
-
-
 #ifndef __DYLD_LOGGING_H__
 #define __DYLD_LOGGING_H__
 
-#include <string.h>
-#include <stdint.h>
 #include <stdarg.h>
+#include <stdint.h>
+#include <string.h>
 
+#if 0
 #define VIS_HIDDEN __attribute__((visibility("hidden")))
-
+#else
+#define VIS_HIDDEN
+#endif
 
 namespace dyld3 {
 
+bool log_loads(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_apis(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_segments(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_initializers(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_fixups(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_notifications(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
+bool log_dofs(const char *format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
 
-bool log_loads(const char* format, ...)         __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_apis(const char* format, ...)          __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_segments(const char* format, ...)      __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_initializers(const char* format, ...)  __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_fixups(const char* format, ...)        __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_notifications(const char* format, ...) __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-bool log_dofs(const char* format, ...)        __attribute__((format(printf, 1, 2))) VIS_HIDDEN;
-
-void halt(const char* message) __attribute((noreturn)) VIS_HIDDEN ;
-
+void halt(const char *message) __attribute((noreturn)) VIS_HIDDEN;
 
 // only called during libdyld set up
-void setLoggingFromEnvs(const char* envp[]) VIS_HIDDEN ;
-void setLoggingFunction(void (*func)(const char* format, va_list list)) VIS_HIDDEN;
-void setHaltFunction(void (*func)(const char* message) __attribute__((noreturn))) VIS_HIDDEN;
-
-
-
+void setLoggingFromEnvs(const char *envp[]) VIS_HIDDEN;
+void setLoggingFunction(void (*func)(const char *format, va_list list)) VIS_HIDDEN;
+void setHaltFunction(void (*func)(const char *message) __attribute__((noreturn))) VIS_HIDDEN;
 
 } // namespace dyld3
 
 #endif // __DYLD_LOGGING_H__
-
-
